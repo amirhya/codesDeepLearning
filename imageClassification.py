@@ -48,12 +48,6 @@ class myModelSequential():
     def fit(self, XTrain, yTrain, XValid, yValid, **kwargs):
         history=self.model.fit(XTrain,yTrain,validation_data=(XValid,yValid),**kwargs)
         return history
-class customizedCallBack(keras.callbacks.Callback):
-    def on_epoch_end(self,epoch,logs):
-        print("\n validation/training loss: {:.2f}".format(logs["val_loss"]/logs["loss"]))
-
-##this callback makes sure to save your model
-checkpointCallBack=keras.callbacks.ModelCheckpoint("imageClassificationModel.h5", save_best_only=True)
 
 class myModelFunctional():
     def __init__(self):
@@ -72,12 +66,23 @@ class myModelFunctional():
         history=self.model.fit(XTrain,yTrain,validation_data=(XValid,yValid),callbacks=callbacks,**kwargs)
         return history
 
-    pass
+
+
+
+class customizedCallBack(keras.callbacks.Callback):
+    def on_epoch_end(self,epoch,logs):
+        print("\n validation/training loss: {:.2f}".format(logs["val_loss"]/logs["loss"]))
+
+##this callback makes sure to save your model at each epoch if its the best performing on the validaiton set so far
+checkpointCallBack=keras.callbacks.ModelCheckpoint("models/imageClassificationModel.h5", save_best_only=True)
+
+
 
 model=myModelSequential()
-model=myModelFunctional()
-
+#model=myModelFunctional()
 model.build()
 model.compile()
 customizedCallBack=customizedCallBack()
 history=model.fit(XTrain, yTrain, XValid=XValid, yValid=yValid, callbacks=[checkpointCallBack, customizedCallBack],epochs=30)
+
+
