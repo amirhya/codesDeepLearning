@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 import pandas as pd
 import matplotlib.pyplot as plt
+import functions
 
 print(tf.__version__)
 print(keras.__version__)
@@ -12,24 +13,14 @@ classNames = ['T-shirt/top','Trouser', 'Pullover',"Dress", "Coat", "Sandal", "Sh
 splitRatio=0.8
 scale=255.0
 
-def normalizeData(data,scale):
-    return data/scale
 
-def splitData(data,splitRatio):
-    splitIndex=int(len(data)*splitRatio)
-    return data[:splitIndex],data[splitIndex:]
-def plotHistory(history):
-    pd.DataFrame(history.history).plot(figsize=(10,6))
-    plt.grid(True)
-    plt.gca().set_ylim(0,1)
-    plt.show()
 
 
 ##preprocessing
-XTrain = normalizeData(data=XTrain,scale=scale)
-XTest = normalizeData(data=XTest,scale=scale)
-XTrain, XValid =splitData(data=XTrain,splitRatio=splitRatio)
-yTrain,yValid=splitData(data=yTrain,splitRatio=splitRatio)
+XTrain = functions.normalizeData(data=XTrain,scale=scale)
+XTest = functions.normalizeData(data=XTest,scale=scale)
+XTrain, XValid =functions.splitData(data=XTrain,splitRatio=splitRatio)
+yTrain,yValid=functions.splitData(data=yTrain,splitRatio=splitRatio)
 #
 # print(fashionMnist.shape)
 # print(fashionMnist.dtype)
@@ -75,7 +66,6 @@ class customizedCallBack(keras.callbacks.Callback):
 
 ##this callback makes sure to save your model at each epoch if its the best performing on the validaiton set so far
 checkpointCallBack=keras.callbacks.ModelCheckpoint("models/imageClassificationModel.h5", save_best_only=True)
-
 
 
 model=myModelSequential()
