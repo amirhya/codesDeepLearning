@@ -66,7 +66,7 @@ rawModel = model.get_model()
 
 
 model.compile(learningRate=1e-3, loss=loss)
-tensorboardCB= tensorboard_m.TensorBoardCB(modelName='sequemtialRegression').getCB()
+tensorboardCB= tensorboard_m.TensorBoardCB(modelName='sequemtialRegression').getCB(writeGrads=True)
 checkpointCallBack=keras.callbacks.ModelCheckpoint("models/imageClassificationModel.h5", save_best_only=True)
 
 history = model.fit(XTrain, yTrain, XValid, yValid, epochs=100, callbacks=[tensorboardCB])
