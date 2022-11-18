@@ -13,5 +13,4 @@ class TensorBoardCB:
     def getCB(self, writeGrads=False):
         return keras.callbacks.TensorBoard(self.runLogDir,write_grads = writeGrads)
 
-
 # TODO: Write code to visulize and track gradient weights
